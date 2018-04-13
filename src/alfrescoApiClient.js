@@ -223,8 +223,13 @@ class AlfrescoApiClient extends ApiClient {
             }
         }
 
+        // todo: decide the right value for the deadline timeout to no longer have bugs like [ACA-1214]:
         // set request timeout
-        request.timeout(this.timeout);
+        request.timeout({
+            response: this.timeout,  // wait for the first byte to arrive from the server,
+            deadline: 2 * this.timeout, // but allow more time for the entire request (including all redirects) to complete.
+        });
+
 
         var contentType = this.jsonPreferredMime(contentTypes);
 
