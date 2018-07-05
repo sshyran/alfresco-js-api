@@ -16,6 +16,10 @@ class EcmAuth extends AlfrescoApiClient {
 
         this.basePath = this.config.hostEcm + '/' + this.config.contextRoot + '/api/-default-/public/authentication/versions/1'; //Auth Call
 
+        if (!this.config.rememberMe) {
+            this.invalidateSession();
+        }
+
         if (this.config.ticketEcm) {
             this.setTicket(config.ticketEcm);
         } else if (this.storage.getItem('ticket-ECM')) {

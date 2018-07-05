@@ -21,6 +21,10 @@ class BpmAuth extends AlfrescoApiClient {
             'basicAuth': {type: 'activiti', ticket: ''}
         };
 
+        if (!this.config.rememberMe) {
+            this.invalidateSession();
+        }
+
         if (this.config.ticketBpm) {
             this.setTicket(config.ticketBpm);
         } else if (this.storage.getItem('ticket-BPM')) {
