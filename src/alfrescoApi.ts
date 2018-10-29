@@ -62,13 +62,23 @@ export class AlfrescoApi {
     upload: AlfrescoUpload;
     webScript: any;
 
-    constructor(config) {
-        this.config = this.configureJsApi(config);
+    on = Emitter.on;
+    off = Emitter.off;
+    once = Emitter.once;
+    emit = Emitter.emit;
+
+    constructor() {
+      //  this.config = this.configureJsApi(config);
+
+        this.on = (new Emitter()).on;
+        this.off = (new Emitter()).off;
+        this.once =(new Emitter()).once;
+        this.emit = (new Emitter()).emit;
 
         Emitter.call(this);
     }
 
-    configureJsApi(config) {
+    setConfig(config) {
         if (!config) {
             config = {};
         }
@@ -91,11 +101,11 @@ export class AlfrescoApi {
         };
 
         this.ecmPrivateClient = new EcmClient(this.config, '/api/-default-/private/alfresco/versions/1');
-        this.ecmClient = new EcmClient(this.config, '/api/-default-/public/alfresco/versions/1');
-        this.searchClient = new EcmClient(this.config, '/api/-default-/public/search/versions/1');
-        this.discoveryClient = new EcmClient(this.config, '/api');
-        this.gsClient = new EcmClient(this.config, '/api/-default-/public/gs/versions/1');
-        this.bpmClient = new BpmClient(this.config);
+        this.ecmClient =        new EcmClient(this.config, '/api/-default-/public/alfresco/versions/1');
+        this.searchClient =     new EcmClient(this.config, '/api/-default-/public/search/versions/1');
+        this.discoveryClient =  new EcmClient(this.config, '/api');
+        this.gsClient =         new EcmClient(this.config, '/api/-default-/public/gs/versions/1');
+        this.bpmClient =        new BpmClient(this.config);
 
         this.errorListeners();
 
@@ -112,6 +122,21 @@ export class AlfrescoApi {
     }
 
     errorListeners() {
+
+        // this.ecmClient.off('error');
+        //
+        // this.ecmPrivateClient.off('error');
+        //
+        // this.bpmClient.off('error');
+        //
+        // this.searchClient.off('error');
+        //
+        // this.discoveryClient.off('error');
+        //
+        // this.gsClient.off('error');
+
+
+
         this.ecmClient.on('error', (error) => {
             this.errorHandler(error);
         });
@@ -479,10 +504,4 @@ export class AlfrescoApi {
     isEcmBpmConfiguration(): boolean {
         return this.config.provider && this.config.provider.toUpperCase() === 'ALL';
     }
-
-
-    on = Emitter.on;
-    off = Emitter.off;
-    once = Emitter.once;
-    emit = Emitter.emit;
 }
