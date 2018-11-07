@@ -24,8 +24,7 @@ class AlfrescoContent {
     getDocumentThumbnailUrl(nodeId, attachment, ticket) {
         return this.ecmClient.basePath + '/nodes/' + nodeId +
             '/renditions/doclib/content' +
-            '?attachment=' + (attachment ? 'true' : 'false') +
-            '&alf_ticket=' + (ticket || this.ecmAuth.getTicket());
+            '?attachment=' + (attachment ? 'true' : 'false') + this.getTicket(ticket);
     }
 
     /**
@@ -39,8 +38,7 @@ class AlfrescoContent {
     getDocumentPreviewUrl(nodeId, attachment, ticket) {
         return this.ecmClient.basePath + '/nodes/' + nodeId +
             '/renditions/imgpreview/content' +
-            '?attachment=' + (attachment ? 'true' : 'false') +
-            '&alf_ticket=' + (ticket || this.ecmAuth.getTicket());
+            '?attachment=' + (attachment ? 'true' : 'false') + this.getTicket(ticket);
     }
 
     /**
@@ -54,8 +52,7 @@ class AlfrescoContent {
     getContentUrl(nodeId, attachment, ticket) {
         return this.ecmClient.basePath + '/nodes/' + nodeId +
             '/content' +
-            '?attachment=' + (attachment ? 'true' : 'false') +
-            '&alf_ticket=' + (ticket || this.ecmAuth.getTicket());
+            '?attachment=' + (attachment ? 'true' : 'false') + this.getTicket(ticket);
     }
 
     /**
@@ -70,8 +67,7 @@ class AlfrescoContent {
     getRenditionUrl(nodeId, encoding, attachment, ticket) {
         return this.ecmClient.basePath + '/nodes/' + nodeId +
             '/renditions/' + encoding + '/content' +
-            '?attachment=' + (attachment ? 'true' : 'false') +
-            '&alf_ticket=' + (ticket || this.ecmAuth.getTicket());
+            '?attachment=' + (attachment ? 'true' : 'false') + this.getTicket(ticket);
     }
 
     /**
@@ -99,6 +95,14 @@ class AlfrescoContent {
         return this.ecmClient.basePath + '/shared-links/' + sharedId +
             '/renditions/' + renditionId + '/content' +
             '?attachment=' + (attachment ? 'true' : 'false');
+    }
+
+    getTicket(ticket) {
+        if (ticket || this.ecmAuth) {
+            return '&alf_ticket=' + (ticket || this.ecmAuth.getTicket());
+        } else {
+            return '';
+        }
     }
 }
 
