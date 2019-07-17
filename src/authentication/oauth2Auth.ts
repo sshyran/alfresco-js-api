@@ -520,7 +520,9 @@ export class Oauth2Auth extends AlfrescoApiClient {
             return;
         }
 
+        console.log(this.config.oauth2.refreshTokenTimeout);
         setTimeout(() => {
+            console.log("here");
             this.destroyIframe();
             this.createIframe();
         }, this.config.oauth2.refreshTokenTimeout);
